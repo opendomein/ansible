@@ -1,0 +1,8 @@
+---
+- name: "Create {{projects_path}}"
+  file:
+    path: "{{projects_path}}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0755

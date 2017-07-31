@@ -1,0 +1,22 @@
+---
+- name: Install mariadb server repository
+  template: src=mariadb-repo.j2 dest=/etc/yum.repos.d/mariadb.repo owner=root group=root
+
+- name: Import mariadb repository GPG key
+  rpm_key: key={{ epel_repo_gpg_key_url }} state=present
+
+- name: Install mariadb-server and mariadb-client
+  yum: name={{item}} state=latest
+  with_items:
+    - MariaDB-server
+    - MariaDB-client
+
+- name: Set default character set
+  template: src=character_set.cnf.j2 dest=/etc/my.cnf.d/character_set.cnf owner=root group=root
+  notify: restart mariadb
+
+- name: Enable mariadb-server
+  service: name=mariadb enabled=yes
+
+- name: Start mariadb-server
+  service: name=mariadb state=started

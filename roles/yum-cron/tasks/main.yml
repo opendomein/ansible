@@ -1,0 +1,8 @@
+---
+- name: Install package
+  yum: name=yum-cron state=latest
+
+- name: Configure to apply updates
+  template:
+    src: yum-cron.conf.j2
+    dest: /etc/yum/yum-cron.conf
