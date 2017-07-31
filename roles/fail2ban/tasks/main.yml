@@ -1,0 +1,20 @@
+---
+- name: Install fail2ban
+  yum: name=fail2ban state=latest
+
+- name: Setup custom bantime
+  template:
+    src: bantime.local.j2
+    dest: "/etc/fail2ban/jail.d/bantime.local"
+  when: fail2ban_bantime is defined
+  notify: restart fail2ban
+
+- name: Enable services
+  template:
+    src: service.local.j2
+    dest: "/etc/fail2ban/jail.d/{{item}}.local"
+  with_items: "{{fail2ban_services}}"
+  notify: restart fail2ban
+
+- name: Start and enable fail2ban
+  service: name=fail2ban enabled=true state=started
