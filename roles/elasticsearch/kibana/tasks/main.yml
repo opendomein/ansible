@@ -1,0 +1,23 @@
+---
+- name: Install kibana
+  yum:
+    name: kibana
+    state: latest
+
+- name: Configure kibana
+  template:
+    src: kibana.yml.j2
+    dest: /etc/kibana/kibana.yml
+    owner: root
+    group: root
+  notify: restart kibana
+
+- name: Enable kibana
+  service:
+    name: kibana
+    enabled: yes
+
+- name: Start kibana
+  service:
+    name: kibana
+    state: started

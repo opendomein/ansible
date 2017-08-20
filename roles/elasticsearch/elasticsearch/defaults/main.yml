@@ -1,0 +1,4 @@
+---
+elasticsearch_cluster_name: my-application
+elasticsearch_node_name: "{{ansible_hostname}}"
+elasticsearch_network_host: "localhost"
